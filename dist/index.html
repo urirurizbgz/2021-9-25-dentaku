@@ -33,13 +33,13 @@
 				</div>
 				<!-- 7 8 9 ÷ -->
 				<div class="flex">
-					<div onclick="inNumber(7)" id="num7" class="btn justify-center">
+					<div onclick="inNumber(7)" id="7" class="btn justify-center">
 						<p>7</p>
 					</div>
-					<div onclick="inNumber(8)" id="num8" class="btn justify-center">
+					<div onclick="inNumber(8)" id="8" class="btn justify-center">
 						<p>8</p>
 					</div>
-					<div onclick="inNumber(9)" id="num9" class="btn justify-center">
+					<div onclick="inNumber(9)" id="9" class="btn justify-center">
 						<p>9</p>
 					</div>
 					<div onclick="inArit('/')" id="division" class="btn justify-center">
@@ -48,13 +48,13 @@
 				</div>
 				<!-- 4 5 6 × -->
 				<div class="flex">
-					<div onclick="inNumber(4)" id="num4" class="btn justify-center">
+					<div onclick="inNumber(4)" id="4" class="btn justify-center">
 						<p>4</p>
 					</div>
-					<div onclick="inNumber(5)" id="num5" class="btn justify-center">
+					<div onclick="inNumber(5)" id="5" class="btn justify-center">
 						<p>5</p>
 					</div>
-					<div onclick="inNumber(6)" id="num6" class="btn justify-center">
+					<div onclick="inNumber(6)" id="6" class="btn justify-center">
 						<p>6</p>
 					</div>
 					<div
@@ -67,14 +67,14 @@
 				</div>
 				<!-- 1 2 3 - -->
 				<div class="flex">
-					<div onclick="inNumber(1)" id="num1" class="btn justify-center">
+					<div onclick="inNumber(1)" id="1" class="btn justify-center">
 						<p>1</p>
 					</div>
 
-					<div onclick="inNumber(2)" id="num2" class="btn justify-center">
+					<div onclick="inNumber(2)" id="2" class="btn justify-center">
 						<p>2</p>
 					</div>
-					<div onclick="inNumber(3)" id="num3" class="btn justify-center">
+					<div onclick="inNumber(3)" id="3" class="btn justify-center">
 						<p>3</p>
 					</div>
 					<div
@@ -87,7 +87,7 @@
 				</div>
 				<!-- 0 = - -->
 				<div class="flex">
-					<div onclick="inNumber(0)" id="num0" class="btn justify-center">
+					<div onclick="inNumber(0)" id="0" class="btn justify-center">
 						<p>0</p>
 					</div>
 					<div onclick="pressEqual()" id="equal" class="btn justify-center">
@@ -110,13 +110,10 @@
 
 		var stack = [];
 		let number, arit, status;
+
 		allClear();
 		display(number);
 		log();
-		const test = true;
-		if (test) {
-			testFunc();
-		}
 
 		/*
 		function allClear()
@@ -130,7 +127,7 @@
 			status = 1;
 			number = 0;
 			arit = "+";
-			stack = [1, 2, 3, 4, 5];
+			stack = [];
 		}
 
 		/*
@@ -146,12 +143,23 @@
 		*/
 		function clear() {
 			// もしS
-				// statusが1、2なら
-					// numberを0にする
-					// numberを表示
-					// status=1にする
-				// statusが3、4なら
-					// allClearを呼ぶ
+			switch (status) {
+				//statusが1、2なら
+				case 1:
+				case 2:
+					//numberを0にする
+					number = 0;
+					//numberを表示
+					display(number);
+					//status=1にする
+					status = 1;
+					break;
+				//statusが3、4なら
+				default:
+					//allClearを呼ぶ
+					allClear();
+					break;
+			}
 		}
 
 		/*
@@ -179,19 +187,79 @@
 		*/
 		function inNumber(input) {
 			// もしS
-				// statusが1なら
-					// numberにnumber*10＋inputを代入する
-					// numberをdisplay関数に渡す
-				// statusが2なら
-					// statusにnumber aritをプッシュ
-					// numberにinputを代入
-					// numberをdisplay関数に渡す
-				// statusが3、4なら
-					// allClear関数を呼ぶ
-					// numberにinputを代入
-					// numberをdisplay関数に渡す
+			switch (status) {
+				//statusが1なら
+				case 1:
+					//numberにnumber*10＋inputを代入する
+					number = number * 10 + input;
+					//numberをdisplay関数に渡す
+					display(number);
+					break;
+				//statusが2なら
+				case 2:
+					//stackにnumber aritをプッシュ
+					stack.push(arit, number);
+					//numberにinputを代入
+					number = input;
+					//numberをdisplay関数に渡す
+					display(number);
+					break;
+				//statusが3、4なら
+				default:
+					//allClear関数を呼ぶ
+					allClear();
+					//numberにinputを代入
+					number = input;
+					//numberをdisplay関数に渡す
+					display(number);
+					break;
+			}
+
 			// status1にする
+			status = 1;
 			// リターン　number
+			return number;
+		}
+
+		/*
+		function inArit(input) {}
+		やること：渡された引数を変数に保存しtemporary関数を呼ぶ
+		詳細：
+			1→2：stack,number,aritをtemporaryに渡す、arit=inputする。status=2する
+			2→2：stack,number,aritをtemporaryに渡す、arit=inputする。status=2する
+			3→2：arit=inputする。status=2する
+			4→4：何もしない
+		引数：input:文字列
+		返り値：arit
+		*/
+		function inArit(input) {
+			// もしS
+			switch (status) {
+				//	statusが1、2
+				case 1:
+				case 2:
+					//stack,number,aritをtemporaryに渡す
+					temporary(stack, number, arit);
+					//arit=inputする
+					arit = input;
+					//status=2する
+					status = 2;
+					break;
+				//statusが3
+				case 3:
+					//arit=inputする
+					arit = input;
+					//status=2する
+					status = 2;
+					break;
+				//statusが4、その他
+				default:
+					//何もしない
+					break;
+			}
+			log();
+			// return arit
+			return input;
 		}
 
 		/*
@@ -207,66 +275,43 @@
 		*/
 		function pressEqual() {
 			// もしS
-				switch (status) {
-					// statusが1
-					case 1:	
-						// stackにnumberをプッシュ
-						stack.push(number);
-						// stackをcal関数に渡し返り値を表示
-						try {
-							cal(stack);
-						} catch (error) {
-							// エラーをキャッチしたら、error関数を呼ぶ
-						}
-							
-						// status=3する	
-						break;
+			switch (status) {
+				// statusが1
+				case 1:
+					console.log("equal-1");
+					// stackにnumberをプッシュ
+					stack.push(number);
+					// stackをcal関数に渡し返り値を表示
+					try {
+						cal(stack);
+					} catch (error) {
+						// エラーをキャッチしたら、error関数を呼ぶ
+						printError();
+					}
+					// status=3する
+					status = 3;
+					break;
 
-					// statusが2,3
-					case 2,3:
-						// stackにarit、numberをプッシュ
-						// stackをcal関数に渡し返り値を表示
-							// エラーをキャッチしたら、error関数を呼ぶ
-						// status=3する
-						break;
+				// statusが2,3
+				case (2, 3):
+					// stackにarit、numberをプッシュ
+					stack.push(number, arit);
+					// stackをcal関数に渡し返り値を表示
+					try {
+						cal(stack);
+					} catch (error) {
+						// エラーをキャッチしたら、error関数を呼ぶ
+						printError();
+					}
+					// status=3する
+					status = 3;
+					break;
 				// statusが4、その他
-					default:// 何もしない
-						break;
-				}
-				
-				
-					
-					
-		}
-
-		/*
-		function inArit(input) {}
-		やること：渡された引数を変数に保存しTemporary関数を呼ぶ
-		詳細：
-			1→2：stack,number,aritをtemporayに渡す、arit=inputする。status=2する
-			2→2：stack,number,aritをtemporayに渡す、arit=inputする。status=2する
-			3→2：arit=inputする。status=2する
-			4→4：何もしない
-		引数：input:文字列
-		返り値：arit
-		*/
-		function inArit(input) {
-			// もしS
-				// statusが1、2
-					// stack,number,aritをtemporayに渡す
-					// arit=inputする
-					// status=2する
-				// statusが3
-					// arit=inputする
-					// status=2する
-				// statusが4、その他
+				default:
 					// 何もしない
-			// return arit
+					break;
+			}
 		}
-		
-		
-		
-
 		/*
 		function temporary()
 		やること：渡された引数を加工しcalをわたし答えを受け取り表示する
@@ -277,10 +322,19 @@
 		*/
 		function temporary(stack, number, arit) {
 			//スタックにaritとnumberをプッシュする
+			stack.push(arit, number);
 			//もし、スタックのレンジが2より大きいなら
-			//calにstackを渡す
-				// エラーをキャッチしたら、error関数を呼ぶ
+			if (stack.length > 2) {
+				//	calにstackを渡す
+				try {
+					cal(stack);
+				} catch (error) {
+					//		エラーをキャッチしたら、error関数を呼ぶ
+					printError();
+				}
+			}
 			// リターン　stack
+			return stack;
 		}
 
 		/*
@@ -329,10 +383,9 @@
 							case "/":
 								if (e === 0) {
 									//えらー投げる
+									throw "division by zero";
 								}
-
 								answer = answer / e;
-
 								break;
 						}
 						break;
@@ -347,12 +400,18 @@
 		引数：なし（エラーが増えたら増えるかもしれない）
 		返り値：（エラーが増えたらエラーにNo.振ってそれを返すかもしれない）
 		*/
-		function error(){
+		function printError() {
 			// display関数に"error"を渡す
+			display("error");
 			// status＝4する
-
+			status = 4;
 		}
 
+		//以下、テスト部
+		const testing = true;
+		if (testing) {
+			testFunc();
+		}
 		function log() {
 			console.log("status : " + status);
 			console.log("number : " + number);
@@ -362,8 +421,51 @@
 		}
 
 		function testFunc() {
-			//cal test
-			cal(stack);
+			// inNumber test
+			//inNumberTest();
+			// inArit　test
+			inAritTest("-");
+		}
+
+		function inNumberTest() {
+			let i, el;
+
+			for (i = 9; i >= 0; i--) {
+				el = document.getElementById(i);
+				el.click();
+				log();
+			}
+		}
+
+		function inAritTest(input) {
+			let re, tu;
+			switch (input) {
+				case "+":
+					re = document.getElementById("addition");
+					//success("inAritTest", "+");
+					break;
+				case "-":
+					re = document.getElementById("subtraction");
+					//success("inAritTest", "+");
+
+					break;
+				case "*":
+					re = document.getElementById("multiplication");
+					//success("inAritTest", "+");
+					break;
+				case "/":
+					re = document.getElementById("division");
+					//success("inAritTest", "+");
+					break;
+			}
+			tu = re.click();
+			console.log("return : " + tu);
+		}
+		function success(num, re) {
+			console.log(num + ":" + re + "◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯ ");
+		}
+		function failed(num) {
+			console.log(num + ":" + re + "× × × × × × × × ");
 		}
 	</script>
 </html>
