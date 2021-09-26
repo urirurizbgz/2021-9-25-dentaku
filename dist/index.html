@@ -293,9 +293,14 @@
 		*/
 		function temporary(stack, number, arit) {
 			//スタックにaritとnumberをプッシュする
+			stack.push(arit, number);
+			let l = stack.length;
 			//もし、スタックのレンジが2より大きいなら
-			//calにstackを渡す
-			// エラーをキャッチしたら、error関数を呼ぶ
+			if (l > 2) {
+				//calにstackを渡す
+				// エラーをキャッチしたら、error関数を呼ぶ
+			}
+			return;
 			// リターン　stack
 		}
 
@@ -447,7 +452,6 @@
 			clear();
 			putLog();
 		}
-
 		function calTest(stack, exp) {
 			//目視OK。機械判定：ok。(表示・仮計算等、他関数呼び出し未実装時)
 
@@ -459,5 +463,6 @@
 			}
 			allClear();
 		}
+		function temporaryTest(exp, stack, number, arit) {}
 	</script>
 </html>
