@@ -112,7 +112,7 @@
 		let number, arit, status;
 		allClear();
 		display(number);
-		log();
+		putLog();
 		const test = true;
 		if (test) {
 			testFunc();
@@ -130,8 +130,7 @@
 			status = 1;
 			number = 0;
 			arit = "+";
-			stack = [];
-			log();
+			stack = ["+"];
 		}
 
 		/*
@@ -146,13 +145,24 @@
 		返り値：なし
 		*/
 		function clear() {
-			// もしS
-			// statusが1、2なら
-			// numberを0にする
-			// numberを表示
-			// status=1にする
-			// statusが3、4なら
-			// allClearを呼ぶ
+			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
+			switch (status) {
+				case 1: //前回入力していたのが数だったら
+					number = 0;
+					break;
+				case 2: //前回入力していたのが記号だったら
+					number = 0;
+					break;
+				case 3: //前回入力していたのが＝だったら
+					allClear();
+					break;
+				default:
+					console.log(
+						"clear : ケース指定していないパターンのstatusです。　status : " +
+							status
+					);
+					break;
+			}
 		}
 
 		/*
@@ -305,7 +315,9 @@
 		返り値：答えの入った変数になるやつ
 		*/
 		function cal(stack) {
-			let param, answer;
+			//目視OK。機械判定：ok。(表示・仮計算等、他関数呼び出し未実装時)
+			let param;
+			let answer = 0;
 			//stackが空になるまで取り出して変数elemに入れ、elemを引数に関数を動かす。
 			stack.forEach((e) => {
 				switch (e) {
@@ -336,15 +348,13 @@
 								if (e === 0) {
 									//えらー投げる
 								}
-
 								answer = answer / e;
-
 								break;
 						}
 						break;
 				}
 			});
-			return ans;
+			return answer;
 		}
 
 		/*
@@ -358,7 +368,13 @@
 			// status＝4する
 		}
 
-		function log() {
+		function success(num) {
+			console.log(num + "   success ◯ ◯ ◯ ◯ ◯ ◯ ◯ ◯");
+		}
+		function failed(num) {
+			console.log(num + "   failed × × × × × × × × ×");
+		}
+		function putLog() {
 			console.log("status : " + status);
 			console.log("number : " + number);
 			console.log("arit : " + arit);
@@ -375,7 +391,20 @@
 			//inAritTest("-", 1, 2, "+", []);
 			//pressEqual() test
 			//pressEqualTest(sta, num, ari, stc)
-			pressEqualTest(3, 2, "+", []);
+			//pressEqualTest(3, 2, "+", []);
+			//clear() test
+			//clearTest(sta, num, ari, stc)
+			//clearTest(1, 2, "+", []);
+			//cal(stack) test
+			//calTest(stack, exp)
+			// calTest(["+", 1, "+", 1], 2);
+			// calTest(["+", 2, "-", 1], 1);
+			// calTest(["+", 3, "*", 4], 12);
+			// calTest(["+", 6, "/", 3], 2);
+			// calTest(["+", 9999999999999, "+", 9999999999999], 19999999999998);
+			// calTest(["+", 0, "-", 9999999999999], -9999999999999);
+			// calTest(["+", 9999999999999, "*", 9999999999999], 9.999999999998e25);
+			// calTest(["+", 9999999999999, "/", 3], 3333333333333);
 		}
 
 		function inNumberTest(input, sta, num, ari, stc) {
@@ -384,9 +413,9 @@
 			number = num;
 			arit = ari;
 			stack = stc;
-			log();
+			putLog();
 			console.log(inNumber(input));
-			log();
+			putLog();
 		}
 		function inAritTest(input, sta, num, ari, stc) {
 			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
@@ -394,9 +423,9 @@
 			number = num;
 			arit = ari;
 			stack = stc;
-			log();
+			putLog();
 			console.log(inArit(input));
-			log();
+			putLog();
 		}
 		function pressEqualTest(sta, num, ari, stc) {
 			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
@@ -404,9 +433,31 @@
 			number = num;
 			arit = ari;
 			stack = stc;
-			log();
+			putLog();
 			console.log(pressEqual());
-			log();
+			putLog();
+		}
+		function clearTest(sta, num, ari, stc) {
+			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
+			status = sta;
+			number = num;
+			arit = ari;
+			stack = stc;
+			putLog();
+			clear();
+			putLog();
+		}
+
+		function calTest(stack, exp) {
+			//目視OK。機械判定：ok。(表示・仮計算等、他関数呼び出し未実装時)
+
+			let r = cal(stack);
+			if (r == exp) {
+				success("calTest : " + stack + "=" + exp + "=" + r);
+			} else {
+				failed("calTest : " + stack + "=" + exp + "≠" + r);
+			}
+			allClear();
 		}
 	</script>
 </html>
