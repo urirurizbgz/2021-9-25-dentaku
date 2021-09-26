@@ -24,45 +24,41 @@
 				</div>
 				<!-- AC C -->
 				<div class="flex">
-					<div onclick="pushButton(ac)" id="ac" class="btn justify-center">
+					<div onclick="allClear()" id="ac" class="btn justify-center">
 						<p>AC</p>
 					</div>
-					<div onclick="pushButton(c)" id="c" class="btn justify-center">
+					<div onclick="clear()" id="c" class="btn justify-center">
 						<p>C</p>
 					</div>
 				</div>
 				<!-- 7 8 9 ÷ -->
 				<div class="flex">
-					<div onclick="pushButton(7)" id="num7" class="btn justify-center">
+					<div onclick="inNumber(7)" id="num7" class="btn justify-center">
 						<p>7</p>
 					</div>
-					<div onclick="pushButton(8)" id="num8" class="btn justify-center">
+					<div onclick="inNumber(8)" id="num8" class="btn justify-center">
 						<p>8</p>
 					</div>
-					<div onclick="pushButton(9)" id="num9" class="btn justify-center">
+					<div onclick="inNumber(9)" id="num9" class="btn justify-center">
 						<p>9</p>
 					</div>
-					<div
-						onclick="pushButton(14)"
-						id="division"
-						class="btn justify-center"
-					>
+					<div onclick="inArit('/')" id="division" class="btn justify-center">
 						<p>÷</p>
 					</div>
 				</div>
 				<!-- 4 5 6 × -->
 				<div class="flex">
-					<div onclick="pushButton(4)" id="num4" class="btn justify-center">
+					<div onclick="inNumber(4)" id="num4" class="btn justify-center">
 						<p>4</p>
 					</div>
-					<div onclick="pushButton(5)" id="num5" class="btn justify-center">
+					<div onclick="inNumber(5)" id="num5" class="btn justify-center">
 						<p>5</p>
 					</div>
-					<div onclick="pushButton(6)" id="num6" class="btn justify-center">
+					<div onclick="inNumber(6)" id="num6" class="btn justify-center">
 						<p>6</p>
 					</div>
 					<div
-						onclick="pushButton(13)"
+						onclick="inArit('*')"
 						id="multiplication"
 						class="btn justify-center"
 					>
@@ -71,18 +67,18 @@
 				</div>
 				<!-- 1 2 3 - -->
 				<div class="flex">
-					<div onclick="pushButton(1)" id="num1" class="btn justify-center">
+					<div onclick="inNumber(1)" id="num1" class="btn justify-center">
 						<p>1</p>
 					</div>
 
-					<div onclick="pushButton(2)" id="num2" class="btn justify-center">
+					<div onclick="inNumber(2)" id="num2" class="btn justify-center">
 						<p>2</p>
 					</div>
-					<div onclick="pushButton(3)" id="num3" class="btn justify-center">
+					<div onclick="inNumber(3)" id="num3" class="btn justify-center">
 						<p>3</p>
 					</div>
 					<div
-						onclick="pushButton(12)"
+						onclick="inArit('-')"
 						id="subtraction"
 						class="btn justify-center"
 					>
@@ -91,22 +87,283 @@
 				</div>
 				<!-- 0 = - -->
 				<div class="flex">
-					<div onclick="pushButton(0)" id="num0" class="btn justify-center">
+					<div onclick="inNumber(0)" id="num0" class="btn justify-center">
 						<p>0</p>
 					</div>
-					<div onclick="pushButton(15)" id="equal" class="btn justify-center">
+					<div onclick="pressEqual()" id="equal" class="btn justify-center">
 						<p>=</p>
 					</div>
-					<div
-						onclick="pushButton(11)"
-						id="addition"
-						class="btn justify-center"
-					>
+					<div onclick="inArit('+')" id="addition" class="btn justify-center">
 						<p>+</p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</body>
-	<script></script>
+	<script>
+		/*
+		やること：
+		詳細：
+		引数：
+		返り値：
+		*/
+
+		var stack = [];
+		let number, arit, status;
+		allClear();
+		display(number);
+		log();
+		const test = true;
+		if (test) {
+			testFunc();
+		}
+
+		/*
+		function allClear()
+		やること：四つの変数を初期値にする
+		詳細：status=1,number=0,arit="+",stack=[],にする
+		引数：なし
+		返り値：なし
+		*/
+		function allClear() {
+			//status=1,number=0,arit="+",stack=[],にする
+			status = 1;
+			number = 0;
+			arit = "+";
+			stack = [1, 2, 3, 4, 5];
+		}
+
+		/*
+		function clear()
+		やること：現在入力されている数を0にして再入力できるようにする
+		詳細：
+			1→1：numberを0にする　numberを表示　status=1にする
+			2→1：numberを0にする　numberを表示　status=1にする
+			3→1：allClearを呼ぶ
+			4→1：allClearを呼ぶ
+		引数：なし
+		返り値：なし
+		*/
+		function clear() {
+			// もしS
+				// statusが1、2なら
+					// numberを0にする
+					// numberを表示
+					// status=1にする
+				// statusが3、4なら
+					// allClearを呼ぶ
+		}
+
+		/*
+		function display(num)
+		やること：渡された引数を画面の指定位置に表示する
+		詳細：渡された引数を画面の指定位置に表示する（textContent
+		引数：num::数値か文字列
+		返り値：？
+		*/
+		function display(num) {
+			//指定されたidの場所に引数numの内容を表示する
+			document.getElementById("display").textContent = num;
+		}
+
+		/*
+		function inNumber(input)
+		やること：渡された引数を加工し正しいタイミングで記号とともにプッシュ
+		詳細：パターン：1→1, 2→1, 3→1, 4→1
+			1→1：number=number*10+input,numberをdisplay関数に渡す。status=1にする。
+			2→1：number,arit をプッシュ。number=inputする。numberをdisplay関数に渡す。status=1にする。
+			3→1：allClear関数を呼ぶ、number=inputする。numberをdisplay関数に渡す。status=1にする。
+			4→1：allClear関数を呼ぶ、number=inputする。numberをdisplay関数に渡す。status=1にする。
+		引数：input:数値：ボタンで入力される数
+		返り値：number
+		*/
+		function inNumber(input) {
+			// もしS
+				// statusが1なら
+					// numberにnumber*10＋inputを代入する
+					// numberをdisplay関数に渡す
+				// statusが2なら
+					// statusにnumber aritをプッシュ
+					// numberにinputを代入
+					// numberをdisplay関数に渡す
+				// statusが3、4なら
+					// allClear関数を呼ぶ
+					// numberにinputを代入
+					// numberをdisplay関数に渡す
+			// status1にする
+			// リターン　number
+		}
+
+		/*
+		function pressEqual()
+		やること：記号や文字をプッシュしてスタックをcalに渡す
+		詳細：
+			1→3：numberプッシュ、stackをcal関数に渡す、cal関数の返り値を表示
+			2→3：number、aritプッシュ、stackをcal関数に渡す、cal関数の返り値を表示
+			3→3：number、aritプッシュ、stackをcal関数に渡す、cal関数の返り値を表示
+			4→4：何もしない
+		引数：なし
+		返り値：？
+		*/
+		function pressEqual() {
+			// もしS
+				switch (status) {
+					// statusが1
+					case 1:	
+						// stackにnumberをプッシュ
+						stack.push(number);
+						// stackをcal関数に渡し返り値を表示
+						try {
+							cal(stack);
+						} catch (error) {
+							// エラーをキャッチしたら、error関数を呼ぶ
+						}
+							
+						// status=3する	
+						break;
+
+					// statusが2,3
+					case 2,3:
+						// stackにarit、numberをプッシュ
+						// stackをcal関数に渡し返り値を表示
+							// エラーをキャッチしたら、error関数を呼ぶ
+						// status=3する
+						break;
+				// statusが4、その他
+					default:// 何もしない
+						break;
+				}
+				
+				
+					
+					
+		}
+
+		/*
+		function inArit(input) {}
+		やること：渡された引数を変数に保存しTemporary関数を呼ぶ
+		詳細：
+			1→2：stack,number,aritをtemporayに渡す、arit=inputする。status=2する
+			2→2：stack,number,aritをtemporayに渡す、arit=inputする。status=2する
+			3→2：arit=inputする。status=2する
+			4→4：何もしない
+		引数：input:文字列
+		返り値：arit
+		*/
+		function inArit(input) {
+			// もしS
+				// statusが1、2
+					// stack,number,aritをtemporayに渡す
+					// arit=inputする
+					// status=2する
+				// statusが3
+					// arit=inputする
+					// status=2する
+				// statusが4、その他
+					// 何もしない
+			// return arit
+		}
+		
+		
+		
+
+		/*
+		function temporary()
+		やること：渡された引数を加工しcalをわたし答えを受け取り表示する
+		詳細：stackにnumber,aritをpush、スタックの中身が2より多ければcal関数にstackを渡す
+		引数：stack：数値か文字列, arit：記号, number：数値
+
+		返り値：加工済みのstack
+		*/
+		function temporary(stack, number, arit) {
+			//スタックにaritとnumberをプッシュする
+			//もし、スタックのレンジが2より大きいなら
+			//calにstackを渡す
+				// エラーをキャッチしたら、error関数を呼ぶ
+			// リターン　stack
+		}
+
+		/*
+		function cal()
+		やること：渡された引数を計算する
+		詳細：
+			渡されたスタックが空になるまで以下を繰り返す
+			スタックの頭から取り出して変数eに入れる
+			eが記号なら変数paramにしまう
+			eが数字かつ
+				paramが＋なら足し算を行う
+				paramがーなら引き算を行う
+				paramが＊なら掛け算を行う
+				paramが/なら割り算を行う　
+		引数：stack：数値か文字列
+		返り値：答えの入った変数になるやつ
+		*/
+		function cal(stack) {
+			let param, answer;
+			//stackが空になるまで取り出して変数elemに入れ、elemを引数に関数を動かす。
+			stack.forEach((e) => {
+				switch (e) {
+					//eが記号の時、変数paramにしまう
+					case "/":
+					case "*":
+					case "-":
+					case "+":
+						param = e;
+						break;
+					//eが記号以外（数字）の時で
+					default:
+						switch (param) {
+							//かつparamが＋なら足し算を行う
+							case "+":
+								answer = answer + e;
+								break;
+							//かつparamがーならひき算を行う
+							case "-":
+								answer = answer - e;
+								break;
+							//かつparamが＊ならかけ算を行う
+							case "*":
+								answer = answer * e;
+								break;
+							//かつparamが/なら割り算を行う
+							case "/":
+								if (e === 0) {
+									//えらー投げる
+								}
+
+								answer = answer / e;
+
+								break;
+						}
+						break;
+				}
+			});
+			return ans;
+		}
+
+		/*
+		やること：エラー表示、statusを4にする
+		詳細：display関数に"error"を渡す、statusを4にする（エラーが増えたらswitch文でエラー文面を変えるかもしれない）
+		引数：なし（エラーが増えたら増えるかもしれない）
+		返り値：（エラーが増えたらエラーにNo.振ってそれを返すかもしれない）
+		*/
+		function error(){
+			// display関数に"error"を渡す
+			// status＝4する
+
+		}
+
+		function log() {
+			console.log("status : " + status);
+			console.log("number : " + number);
+			console.log("arit : " + arit);
+			console.log("stack : " + stack);
+			console.log("----------------------------------");
+		}
+
+		function testFunc() {
+			//cal test
+			cal(stack);
+		}
+	</script>
 </html>
