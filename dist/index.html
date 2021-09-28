@@ -111,6 +111,7 @@
 		var stack = [];
 		let number, arit, status;
 		allClear();
+
 		display(number);
 		putLog();
 
@@ -159,6 +160,8 @@
 					allClear();
 					break;
 			}
+			//表示する
+			display(number);
 		}
 
 		/*
@@ -206,6 +209,8 @@
 			}
 			// status1にする
 			status = 1;
+			//表示する
+			display(number);
 			// リターン　number
 			return number;
 		}
@@ -225,14 +230,11 @@
 			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
 			switch (status) {
 				case 1: //前回入力していたのが数だったら
-					arit = input;
-					status = 2;
-					break;
 				case 2: //前回入力していたのが記号だったら
 					arit = input;
+					temporary(stack.concat(), number, arit);
 					status = 2;
 					break;
-
 				case 3: //前回入力していたのが＝だったら
 					arit = input;
 					status = 2;
@@ -262,15 +264,18 @@
 			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
 			switch (status) {
 				case 1: //前回入力していたのが数だったら
-					stack.push(number);
-					status = 3;
-					break;
 				case 2: //前回入力していたのが記号だったら
-					stack.push(number);
-					status = 3;
-					break;
 				case 3: //前回入力していたのが＝だったら
-					stack.push(arit, number);
+					if (status == 3) {
+						stackCol.push(arit);
+					}
+					stack.push(number);
+					try {
+						display(cal(stack));
+					} catch (e) {
+						putError();
+					}
+
 					status = 3;
 					break;
 				default:
@@ -288,16 +293,22 @@
 
 		返り値：加工済みのstack
 		*/
-		function temporary(stack, number, arit) {
-			//スタックにaritとnumberをプッシュする
-			stack.push(arit, number);
-			let l = stack.length;
+		function temporary(stackTemp, number, arit) {
+			//スタックにnumberとaritをプッシュする
+			stackTemp.push(number, arit);
+
 			//もし、スタックのレンジが2より大きいなら
-			if (l > 2) {
+			if (stackTemp.length > 2) {
 				//calにstackを渡す
-				// エラーをキャッチしたら、error関数を呼ぶ
+				try {
+					console.log("stackTemp : " + stackTemp);
+					display(cal(stackTemp));
+				} catch (e) {
+					// エラーをキャッチしたら、error関数を呼ぶ
+					putError();
+				}
 			}
-			return;
+			return stackTemp;
 			// リターン stack
 		}
 
@@ -349,6 +360,7 @@
 							case "/":
 								if (e === 0) {
 									//えらー投げる
+									throw "Error: divided by zero";
 								}
 								answer = answer / e;
 								break;
@@ -356,6 +368,7 @@
 						break;
 				}
 			});
+			//表示する
 			return answer;
 		}
 
@@ -365,9 +378,9 @@
 		引数：なし（エラーが増えたら増えるかもしれない）
 		返り値：（エラーが増えたらエラーにNo.振ってそれを返すかもしれない）
 		*/
-		function error() {
-			console.log("エラー未実装。　");
+		function putError() {
 			// display関数に"error"を渡す
+			display("error");
 			// status＝4する
 			status = 4;
 		}
