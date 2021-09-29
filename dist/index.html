@@ -142,7 +142,7 @@
 		返り値：なし
 		*/
 		function clear() {
-			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
+			//目視OK。機械判定：未判定。ボタン動作：未確認
 			switch (status) {
 				case 1: //前回入力していたのが数だったら
 					number = 0;
@@ -188,7 +188,7 @@
 		返り値：number
 		*/
 		function inNumber(input) {
-			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
+			//目視OK。機械判定：未判定。ボタン動作：未確認
 			switch (status) {
 				case 1: //前回入力していたのが数だったら
 					number = number * 10 + input;
@@ -197,12 +197,10 @@
 					stack.push(number, arit);
 					number = input;
 					break;
-				case 3: //前回入力していたのが＝だったら
-					allClear();
-					number = input;
-					break;
+
 				default:
-					//前回,エラーが起こっていたら
+					//前回,エラーが起こっていたら//前回入力していたのが＝だったら
+					console.log("ninumdef");
 					allClear();
 					number = input;
 					break;
@@ -227,13 +225,14 @@
 		返り値：arit
 		*/
 		function inArit(input) {
-			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
+			//目視OK。機械判定：未判定。ボタン動作：未確認
 			switch (status) {
 				case 1: //前回入力していたのが数だったら
 				case 2: //前回入力していたのが記号だったら
 					arit = input;
-					temporary(stack.concat(), number, arit);
 					status = 2;
+					temporary(stack.concat(), number, arit);
+
 					break;
 				case 3: //前回入力していたのが＝だったら
 					arit = input;
@@ -261,13 +260,13 @@
 		返り値：？
 		*/
 		function pressEqual() {
-			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
+			//目視OK。機械判定：未判定。ボタン動作：未確認
 			switch (status) {
 				case 1: //前回入力していたのが数だったら
 				case 2: //前回入力していたのが記号だったら
 				case 3: //前回入力していたのが＝だったら
 					if (status == 3) {
-						stackCol.push(arit);
+						stack.push(arit);
 					}
 					stack.push(number);
 					try {
@@ -295,19 +294,20 @@
 		*/
 		function temporary(stackTemp, number, arit) {
 			//スタックにnumberとaritをプッシュする
+
 			stackTemp.push(number, arit);
 
 			//もし、スタックのレンジが2より大きいなら
 			if (stackTemp.length > 2) {
 				//calにstackを渡す
 				try {
-					console.log("stackTemp : " + stackTemp);
 					display(cal(stackTemp));
 				} catch (e) {
 					// エラーをキャッチしたら、error関数を呼ぶ
 					putError();
 				}
 			}
+
 			return stackTemp;
 			// リターン stack
 		}
@@ -328,7 +328,7 @@
 		返り値：答えの入った変数になるやつ
 		*/
 		function cal(stack) {
-			//目視OK。機械判定：ok。(表示・仮計算等、他関数呼び出し未実装時)
+			//目視OK。機械判定：ok。
 			let param = "+";
 			let answer = 0;
 			//stackが空になるまで取り出して変数elemに入れ、elemを引数に関数を動かす。
@@ -381,8 +381,10 @@
 		function putError() {
 			// display関数に"error"を渡す
 			display("error");
+
 			// status＝4する
 			status = 4;
+			console.log("status===4");
 		}
 
 		function success(num) {
@@ -406,16 +408,23 @@
 		function testFunc() {
 			/*
 			inNumber(input) test
-			inNumberTest(input, sra, num, ari, stc);*/
-			// inNumberTest(1, 1, 2, "+", []);
+			inNumberTest(input, sta, num, ari, stc);*/
+			//inNumberTest(1, 1, 2, "+", [], 21);
+			//inNumberTest(1, 2, 3, "*", [1, "+", 2, "-"], [1, "+", 2, "-", 3, "*"]);
+			//inNumberTest(9, 3, 3, "*", [1, "+", 2, "-"], [1, "+", 2, "-", 3, "*"]);
 			/*
 			inArit(input)test
 			inNumberTest(input, sta, num, ari, stc)*/
-			// inAritTest("-", 1, 2, "+", []);
+			//inAritTest("-", 4, 2, "+", []);
 			/*
 			pressEqual() test
-			pressEqualTest(sta, num, ari, stc)*/
-			// pressEqualTest(3, 2, "+", []);
+			pressEqualTest(sta, num, ari, stc, exp)*/
+			// pressEqualTest(1, 2, "+", [], [2]);
+			// pressEqualTest(2, 2, "+", [], [2]);
+			// pressEqualTest(3, 2, "+", [], ["+", 2]);
+			// pressEqualTest(4, 2, "+", [], ["+", 2]);
+			// pressEqualTest(5, 2, "+", [], ["+", 2]);
+			/*
 			/*
 			allClear()
 			allClearTest(stc, num, ar, sta)*/
@@ -426,8 +435,12 @@
 			//allClearTest([1, "+", 1], 5, "*", 5);
 			/*
 			clear() test
-			clearTest(sta, num, ari, stc)*/
-			// clearTest(1, 2, "+", []);
+			clearTest(stc, num, ari, sta)*/
+			// clearTest([1, "+", 1], 5, "*", 1);
+			// clearTest([1, "+", 1], 5, "*", 2);
+			// clearTest([1, "+", 1], 5, "*", 3);
+			// clearTest([1, "+", 1], 5, "*", 4);
+			// clearTest([1, "+", 1], 5, "*", 5);
 			/*
 			cal(stack) test
 			calTest(stack, exp)*/
@@ -439,75 +452,25 @@
 			// calTest([0, "-", 9999999999999], -9999999999999);
 			// calTest([9999999999999, "*", 9999999999999], 9.999999999998e25);
 			// calTest([9999999999999, "/", 3], 3333333333333);
+			/*
+			putError()
+			putErrorTest(stc, num, ari, sta) */
+			//putErrorTest([1, "+", 1], 5, "*", 1);
+			//putErrorTest([1, "+", 1], 5, "*", 2);
+			//putErrorTest([1, "+", 1], 5, "*", 3);
+			//putErrorTest([1, "+", 1], 5, "*", 4);
+			//putErrorTest([1, "+", 1], 5, "*", 5);
+			/*
+			temporary(stackTemp, number, arit)
+			temporaryTest(sta, num, ari, stc)*/
+			//temporaryTest(1, 5, "+", [1, "+", 1]);
 		}
 
-		function inNumberTest(input, sta, num, ari, stc) {
-			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
-			status = sta;
+		function allClearTest(stc, num, ari, sta) {
+			//目視OK。機械判定：ok。
+			stack = stc;
 			number = num;
 			arit = ari;
-			stack = stc;
-			putLog();
-			console.log(inNumber(input));
-			switch (sta) {
-				case 1:
-					break;
-				case 1:
-					break;
-				case 1:
-					break;
-				default:
-					break;
-			}
-			putLog();
-		}
-		function inAritTest(input, sta, num, ari, stc) {
-			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
-			status = sta;
-			number = num;
-			arit = ari;
-			stack = stc;
-			putLog();
-			console.log(inArit(input));
-			putLog();
-		}
-		function pressEqualTest(sta, num, ari, stc) {
-			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
-			status = sta;
-			number = num;
-			arit = ari;
-			stack = stc;
-			putLog();
-			console.log(pressEqual());
-			putLog();
-		}
-		function clearTest(sta, num, ari, stc) {
-			//目視OK。機械判定：未判定。ボタン動作：未確認(表示・仮計算等、他関数呼び出し未実装時)
-			status = sta;
-			number = num;
-			arit = ari;
-			stack = stc;
-			putLog();
-			clear();
-			putLog();
-		}
-		function calTest(stack, exp) {
-			//目視OK。機械判定：ok。(表示・仮計算等、他関数呼び出し未実装時)
-
-			let r = cal(stack);
-			if (r == exp) {
-				success("calTest : " + stack + "=" + exp + "=" + r);
-			} else {
-				failed("calTest : " + stack + "=" + exp + "≠" + r);
-			}
-			allClear();
-		}
-
-		function allClearTest(stc, num, ar, sta) {
-			//目視OK。機械判定：ok。(表示・仮計算等、他関数呼び出し未実装時)
-			stack = stc;
-			number = num;
-			arit = ar;
 			status = sta;
 
 			allClear();
@@ -518,6 +481,208 @@
 			}
 		}
 
-		function temporaryTest(exp, stack, number, arit) {}
+		function clearTest(stc, num, ari, sta) {
+			//目視OK。機械判定：未判定。ボタン動作：未確認
+			status = sta;
+			number = num;
+			arit = ari;
+			stack = stc;
+			clear();
+			switch (sta) {
+				case 1:
+				case 2:
+					if (
+						status === 1 &&
+						number === 0 &&
+						arit === ari &&
+						stack.toString === stc.toString
+					) {
+						success("clearTest : ");
+					} else {
+						failed("clearTest : ");
+					}
+					break;
+				default:
+					if (
+						status === 1 &&
+						number === 0 &&
+						arit === "+" &&
+						stack.length === 0
+					) {
+						success("clearTest : ");
+					} else {
+						failed("clearTest : ");
+					}
+					break;
+			}
+		}
+
+		function inNumberTest(input, sta, num, ari, stc, exp) {
+			//目視OK。機械判定：未判定。ボタン動作：未確認
+			status = sta;
+			number = num;
+			arit = ari;
+			stack = stc;
+			inNumber(input);
+			switch (sta) {
+				case 1:
+					if (
+						status === 1 &&
+						number === exp &&
+						arit == ari &&
+						stack.toString === stc.toString
+					) {
+						success("inNumberTest : status : " + status);
+					} else {
+						failed("inNumberTest : status : " + status);
+					}
+					break;
+				case 2:
+					if (
+						status === 1 &&
+						number === input &&
+						arit == ari &&
+						stack.toString === exp.toString
+					) {
+						success("inNumberTest : status : " + status);
+					} else {
+						failed("inNumberTest : status : " + status);
+					}
+					break;
+				default:
+					if (
+						(status === 1 && number === input && arit == "+" && stack,
+						length === 0)
+					) {
+						success("inNumberTest : status : " + status);
+					} else {
+						failed("inNumberTest : status : " + status);
+					}
+					break;
+			}
+		}
+		function inAritTest(input, sta, num, ari, stc) {
+			//目視OK。機械判定：未判定。ボタン動作：未確認
+			status = sta;
+			number = num;
+			arit = ari;
+			stack = stc;
+			console.log(inArit(input));
+			switch (sta) {
+				case 1:
+				case 2:
+				case 3:
+					if (
+						input === arit &&
+						status === 2 &&
+						number === num &&
+						stack.toString === stc.toString
+					) {
+						success("inAritTest : status : " + status);
+					} else {
+						failed("inAritTest : status : " + status);
+					}
+					break;
+				default:
+					if (
+						status === sta &&
+						number === num &&
+						arit === ari &&
+						stack.toString === stc.toString
+					) {
+						success("inAritTest : status : " + status);
+					} else {
+						failed("inAritTest : status : " + status);
+					}
+					break;
+			}
+		}
+		function calTest(stack, exp) {
+			//目視OK。機械判定：ok。
+
+			let r = cal(stack);
+			if (r == exp) {
+				success("calTest : " + stack + "=" + exp + "=" + r);
+			} else {
+				failed("calTest : " + stack + "=" + exp + "≠" + r);
+			}
+			allClear();
+		}
+
+		function putErrorTest(stc, num, ari, sta) {
+			//目視OK。機械判定：ok。
+			status = sta;
+			number = num;
+			arit = ari;
+			stack = stc;
+			putError();
+			if (status === 4) {
+				success("putErrorTest : status : " + status);
+			} else {
+				failed("putErrorTest : status : " + status);
+			}
+		}
+		function temporaryTest(sta, num, ari, stc) {
+			let t;
+			status = sta;
+			number = num;
+			arit = ari;
+			stack = stc;
+			t = temporary(stack.concat(), number, arit);
+			stc.push(number, arit);
+			if (stc.toString === t.toString) {
+				success("temporaryTest : " + status);
+			} else {
+				failed("temporaryTest : " + status);
+			}
+		}
+
+		function pressEqualTest(sta, num, ari, stc, exp) {
+			//目視OK。機械判定：未判定。ボタン動作：未確認
+			status = sta;
+			number = num;
+			arit = ari;
+			stack = stc;
+			pressEqual();
+			switch (sta) {
+				case 1:
+				case 2:
+					if (
+						stack.toString === exp.toString &&
+						status === 3 &&
+						arit === ari &&
+						number === num
+					) {
+						success("pressEqualTest : status : " + status);
+					} else {
+						failed("pressEqualTest : status : " + status);
+					}
+					break;
+				case 3:
+					if (
+						stack.toString === exp.toString &&
+						status === 3 &&
+						arit === ari &&
+						number === num
+					) {
+						success("pressEqualTest : status : " + status);
+					} else {
+						failed("pressEqualTest : status : " + status);
+					}
+					break;
+				default:
+					if (
+						stack.toString === stc.toString &&
+						status === sta &&
+						arit === ari &&
+						number === num
+					) {
+						success("pressEqualTest : status : " + status);
+					} else {
+						failed("pressEqualTest : status : " + status);
+					}
+					break;
+			}
+		}
 	</script>
 </html>
