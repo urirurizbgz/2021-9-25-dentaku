@@ -27,7 +27,7 @@
 					<div onclick="allClear()" id="ac" class="btn justify-center">
 						<p>AC</p>
 					</div>
-					<div onclick="clear()" id="c" class="btn justify-center">
+					<div onclick="pressClear()" id="c" class="btn justify-center">
 						<p>C</p>
 					</div>
 				</div>
@@ -104,7 +104,7 @@
 		let number, arit, status;
 		allClear();
 		display(number);
-		putLog();
+		// putLog();
 
 		/*
 		function allClear()
@@ -120,11 +120,11 @@
 			arit = "+";
 			stack = [];
 			display(number);
-			console.log("allClear:starus:" + status);
+			statusCheck("allClear");
 		}
 
 		/*
-		function clear()
+		function pressClear()
 		やること：現在入力されている数を0にして再入力できるようにする
 		詳細：
 			1→1：numberを0にする　numberを表示　status=1にする
@@ -134,7 +134,7 @@
 		引数：なし
 		返り値：なし
 		*/
-		function clear() {
+		function pressClear() {
 			//目視OK。機械判定：未判定。ボタン動作：未確認
 			switch (status) {
 				case 1: //前回入力していたのが数だったら
@@ -156,7 +156,7 @@
 					break;
 			}
 
-			console.log("Clear:starus:" + status);
+			statusCheck("pressClear");
 		}
 
 		/*
@@ -204,7 +204,7 @@
 			status = 1;
 			//表示する
 			display(number);
-			console.log("inNumber:starus:" + status);
+			statusCheck("inNumber");
 			// リターン　number
 			return number;
 		}
@@ -232,6 +232,7 @@
 					break;
 				case 3: //前回入力していたのが＝だったら
 					arit = input;
+					number = 0; //1+2=(3),*3 =(15)になってしまう（正しくは9）、そのための対処として追加
 					status = 2;
 					break;
 				default:
@@ -239,7 +240,7 @@
 					//何もしない
 					break;
 			}
-			console.log("inArit:starus:" + status);
+			statusCheck("inArit");
 			// return arit
 			return arit;
 		}
@@ -262,10 +263,10 @@
 				case 1: //前回入力していたのが数だったら
 				case 2: //前回入力していたのが記号だったら
 				case 3: //前回入力していたのが＝だったら
-					status = 3;
 					if (status == 3) {
 						stack.push(arit);
 					}
+					status = 3;
 					stack.push(number);
 					try {
 						display(cal(stack));
@@ -279,7 +280,7 @@
 					//何もしない
 					break;
 			}
-			console.log("pressEqual:starus:" + status);
+			statusCheck("pressEqual");
 		}
 
 		/*
@@ -383,7 +384,7 @@
 			// status＝4する
 			status = 4;
 			console.log("status===4");
-			console.log("putError:starus:" + status);
+			statusCheck("putError");
 		}
 
 		function success(num) {
@@ -433,7 +434,7 @@
 			//allClearTest([1, "+", 1], 5, "*", 4);
 			//allClearTest([1, "+", 1], 5, "*", 5);
 			/*
-			clear() test
+			pressClear() test
 			clearTest(stc, num, ari, sta)*/
 			// clearTest([1, "+", 1], 5, "*", 1);
 			// clearTest([1, "+", 1], 5, "*", 2);
@@ -467,7 +468,8 @@
 			// clickNum();
 			// clickArit();
 			// clickEqual();
-			clickC();
+			//clickClear();
+			//clickAllClear();
 		}
 
 		function allClearTest(stc, num, ari, sta) {
@@ -491,7 +493,7 @@
 			number = num;
 			arit = ari;
 			stack = stc;
-			clear();
+			pressClear();
 			switch (sta) {
 				case 1:
 				case 2:
@@ -709,8 +711,15 @@
 
 			document.getElementById("equal").click();
 		}
-		function clickC() {
+		function clickClear() {
 			document.getElementById("c").click();
+		}
+		function clickAllClear() {
+			document.getElementById("ac").click();
+		}
+		function statusCheck(functionName) {
+			console.log(functionName + ":status:" + status);
+			putLog();
 		}
 	</script>
 </html>
