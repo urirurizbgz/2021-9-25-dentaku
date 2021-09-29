@@ -42,7 +42,7 @@
 					<div onclick="inNumber(9)" id="num9" class="btn justify-center">
 						<p>9</p>
 					</div>
-					<div onclick="inArit('/')" id="division" class="btn justify-center">
+					<div onclick="inArit('/')" id="arit4" class="btn justify-center">
 						<p>÷</p>
 					</div>
 				</div>
@@ -57,11 +57,7 @@
 					<div onclick="inNumber(6)" id="num6" class="btn justify-center">
 						<p>6</p>
 					</div>
-					<div
-						onclick="inArit('*')"
-						id="multiplication"
-						class="btn justify-center"
-					>
+					<div onclick="inArit('*')" id="arit3" class="btn justify-center">
 						<p>×</p>
 					</div>
 				</div>
@@ -77,11 +73,7 @@
 					<div onclick="inNumber(3)" id="num3" class="btn justify-center">
 						<p>3</p>
 					</div>
-					<div
-						onclick="inArit('-')"
-						id="subtraction"
-						class="btn justify-center"
-					>
+					<div onclick="inArit('-')" id="arit2" class="btn justify-center">
 						<p>-</p>
 					</div>
 				</div>
@@ -93,7 +85,7 @@
 					<div onclick="pressEqual()" id="equal" class="btn justify-center">
 						<p>=</p>
 					</div>
-					<div onclick="inArit('+')" id="addition" class="btn justify-center">
+					<div onclick="inArit('+')" id="arit1" class="btn justify-center">
 						<p>+</p>
 					</div>
 				</div>
@@ -111,7 +103,6 @@
 		var stack = [];
 		let number, arit, status;
 		allClear();
-
 		display(number);
 		putLog();
 
@@ -128,6 +119,8 @@
 			number = 0;
 			arit = "+";
 			stack = [];
+			display(number);
+			console.log("allClear:starus:" + status);
 		}
 
 		/*
@@ -147,10 +140,12 @@
 				case 1: //前回入力していたのが数だったら
 					number = 0;
 					status = 1;
+					display(number);
 					break;
 				case 2: //前回入力していたのが記号だったら
 					number = 0;
 					status = 1;
+					display(number);
 					break;
 				case 3: //前回入力していたのが＝だったら
 					allClear();
@@ -160,8 +155,8 @@
 					allClear();
 					break;
 			}
-			//表示する
-			display(number);
+
+			console.log("Clear:starus:" + status);
 		}
 
 		/*
@@ -209,6 +204,7 @@
 			status = 1;
 			//表示する
 			display(number);
+			console.log("inNumber:starus:" + status);
 			// リターン　number
 			return number;
 		}
@@ -243,7 +239,7 @@
 					//何もしない
 					break;
 			}
-
+			console.log("inArit:starus:" + status);
 			// return arit
 			return arit;
 		}
@@ -261,10 +257,12 @@
 		*/
 		function pressEqual() {
 			//目視OK。機械判定：未判定。ボタン動作：未確認
+			console.log("equal");
 			switch (status) {
 				case 1: //前回入力していたのが数だったら
 				case 2: //前回入力していたのが記号だったら
 				case 3: //前回入力していたのが＝だったら
+					status = 3;
 					if (status == 3) {
 						stack.push(arit);
 					}
@@ -275,13 +273,13 @@
 						putError();
 					}
 
-					status = 3;
 					break;
 				default:
 					//前回,エラーが起こっていたら
 					//何もしない
 					break;
 			}
+			console.log("pressEqual:starus:" + status);
 		}
 
 		/*
@@ -385,6 +383,7 @@
 			// status＝4する
 			status = 4;
 			console.log("status===4");
+			console.log("putError:starus:" + status);
 		}
 
 		function success(num) {
@@ -464,6 +463,11 @@
 			temporary(stackTemp, number, arit)
 			temporaryTest(sta, num, ari, stc)*/
 			//temporaryTest(1, 5, "+", [1, "+", 1]);
+			/*数字ボタン反応*/
+			// clickNum();
+			// clickArit();
+			// clickEqual();
+			clickC();
 		}
 
 		function allClearTest(stc, num, ari, sta) {
@@ -636,7 +640,6 @@
 				failed("temporaryTest : " + status);
 			}
 		}
-
 		function pressEqualTest(sta, num, ari, stc, exp) {
 			//目視OK。機械判定：未判定。ボタン動作：未確認
 			status = sta;
@@ -683,6 +686,31 @@
 					}
 					break;
 			}
+		}
+
+		function clickNum() {
+			allClear();
+			let i;
+			for (i = 9; i > -1; i--) {
+				document.getElementById("num" + i).click();
+			}
+		}
+		function clickArit() {
+			allClear();
+			let i;
+			for (i = 4; i > 0; i--) {
+				document.getElementById("arit" + i).click();
+				putLog();
+			}
+		}
+		function clickEqual() {
+			allClear();
+			let i;
+
+			document.getElementById("equal").click();
+		}
+		function clickC() {
+			document.getElementById("c").click();
 		}
 	</script>
 </html>
