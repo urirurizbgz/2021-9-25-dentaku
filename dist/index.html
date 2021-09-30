@@ -102,6 +102,7 @@
 
 		var stack = [];
 		let number, arit, status;
+
 		allClear();
 		display(number);
 		// putLog();
@@ -190,6 +191,7 @@
 					break;
 				case 2: //前回入力していたのが記号だったら
 					stack.push(number, arit);
+
 					number = input;
 					break;
 
@@ -205,7 +207,7 @@
 			//表示する
 			display(number);
 			statusCheck("inNumber");
-			// リターン　number
+			// リターン number
 			return number;
 		}
 
@@ -232,7 +234,7 @@
 					break;
 				case 3: //前回入力していたのが＝だったら
 					arit = input;
-					number = 0; //1+2=(3),*3 =(15)になってしまう（正しくは9）、そのための対処として追加
+					//number = 0; ///////////1+2=(3),*3 =(15)になってしまう（正しくは9）、そのための対処として追加
 					status = 2;
 					break;
 				default:
@@ -266,8 +268,11 @@
 					if (status == 3) {
 						stack.push(arit);
 					}
+
 					status = 3;
-					stack.push(number);
+
+					stack.push(number, "=");
+
 					try {
 						display(cal(stack));
 					} catch (e) {
@@ -340,6 +345,10 @@
 					case "+":
 						param = e;
 						break;
+					case "=":
+						allClear();
+						number = answer;
+						break;
 					//eが記号以外（数字）の時で
 					default:
 						switch (param) {
@@ -406,44 +415,44 @@
 			testFunc();
 		}
 		function testFunc() {
-			/*
-			inNumber(input) test
-			inNumberTest(input, sta, num, ari, stc);*/
-			//inNumberTest(1, 1, 2, "+", [], 21);
-			//inNumberTest(1, 2, 3, "*", [1, "+", 2, "-"], [1, "+", 2, "-", 3, "*"]);
-			//inNumberTest(9, 3, 3, "*", [1, "+", 2, "-"], [1, "+", 2, "-", 3, "*"]);
-			/*
-			inArit(input)test
-			inNumberTest(input, sta, num, ari, stc)*/
-			//inAritTest("-", 4, 2, "+", []);
-			/*
-			pressEqual() test
-			pressEqualTest(sta, num, ari, stc, exp)*/
+			// /*
+			// inNumber(input) test
+			// inNumberTest(input, sta, num, ari, stc);*/
+			// inNumberTest(1, 1, 2, "+", [], 21);
+			// inNumberTest(1, 2, 3, "*", [1, "+", 2, "-"], [1, "+", 2, "-", 3, "*"]);
+			// inNumberTest(9, 3, 3, "*", [1, "+", 2, "-"], [1, "+", 2, "-", 3, "*"]);
+			// /*
+			// inArit(input)test
+			// inNumberTest(input, sta, num, ari, stc)*/
+			// //inAritTest("-", 4, 2, "+", []);
+			// /*
+			// pressEqual() test
+			// pressEqualTest(sta, num, ari, stc, exp)*/
 			// pressEqualTest(1, 2, "+", [], [2]);
 			// pressEqualTest(2, 2, "+", [], [2]);
 			// pressEqualTest(3, 2, "+", [], ["+", 2]);
 			// pressEqualTest(4, 2, "+", [], ["+", 2]);
 			// pressEqualTest(5, 2, "+", [], ["+", 2]);
-			/*
-			/*
-			allClear()
-			allClearTest(stc, num, ar, sta)*/
-			//allClearTest([1, "+", 1], 5, "*", 1);
-			//allClearTest([1, "+", 1], 5, "*", 2);
-			//allClearTest([1, "+", 1], 5, "*", 3);
-			//allClearTest([1, "+", 1], 5, "*", 4);
-			//allClearTest([1, "+", 1], 5, "*", 5);
-			/*
-			pressClear() test
-			clearTest(stc, num, ari, sta)*/
+			// /*
+			// /*
+			// allClear()
+			// allClearTest(stc, num, ar, sta)*/
+			// allClearTest([1, "+", 1], 5, "*", 1);
+			// allClearTest([1, "+", 1], 5, "*", 2);
+			// allClearTest([1, "+", 1], 5, "*", 3);
+			// allClearTest([1, "+", 1], 5, "*", 4);
+			// allClearTest([1, "+", 1], 5, "*", 5);
+			// /*
+			// pressClear() test
+			// clearTest(stc, num, ari, sta)*/
 			// clearTest([1, "+", 1], 5, "*", 1);
 			// clearTest([1, "+", 1], 5, "*", 2);
 			// clearTest([1, "+", 1], 5, "*", 3);
 			// clearTest([1, "+", 1], 5, "*", 4);
 			// clearTest([1, "+", 1], 5, "*", 5);
-			/*
-			cal(stack) test
-			calTest(stack, exp)*/
+			// /*
+			// cal(stack) test
+			// calTest(stack, exp)*/
 			// calTest([1, "+", 1], 2);
 			// calTest([2, "-", 1], 1);
 			// calTest([3, "*", 4], 12);
@@ -452,24 +461,24 @@
 			// calTest([0, "-", 9999999999999], -9999999999999);
 			// calTest([9999999999999, "*", 9999999999999], 9.999999999998e25);
 			// calTest([9999999999999, "/", 3], 3333333333333);
-			/*
-			putError()
-			putErrorTest(stc, num, ari, sta) */
-			//putErrorTest([1, "+", 1], 5, "*", 1);
-			//putErrorTest([1, "+", 1], 5, "*", 2);
-			//putErrorTest([1, "+", 1], 5, "*", 3);
-			//putErrorTest([1, "+", 1], 5, "*", 4);
-			//putErrorTest([1, "+", 1], 5, "*", 5);
-			/*
-			temporary(stackTemp, number, arit)
-			temporaryTest(sta, num, ari, stc)*/
-			//temporaryTest(1, 5, "+", [1, "+", 1]);
-			/*数字ボタン反応*/
+			// /*
+			// putError()
+			// putErrorTest(stc, num, ari, sta) */
+			// putErrorTest([1, "+", 1], 5, "*", 1);
+			// putErrorTest([1, "+", 1], 5, "*", 2);
+			// putErrorTest([1, "+", 1], 5, "*", 3);
+			// putErrorTest([1, "+", 1], 5, "*", 4);
+			// putErrorTest([1, "+", 1], 5, "*", 5);
+			// /*
+			// temporary(stackTemp, number, arit)
+			// temporaryTest(sta, num, ari, stc)*/
+			// //temporaryTest(1, 5, "+", [1, "+", 1]);
+			// /*数字ボタン反応*/
 			// clickNum();
 			// clickArit();
 			// clickEqual();
-			//clickClear();
-			//clickAllClear();
+			// clickClear();
+			// clickAllClear();
 		}
 
 		function allClearTest(stc, num, ari, sta) {
