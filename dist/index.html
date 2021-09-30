@@ -260,7 +260,7 @@
 		*/
 		function pressEqual() {
 			//目視OK。機械判定：未判定。ボタン動作：未確認
-			console.log("equal");
+			let ans;
 			switch (status) {
 				case 1: //前回入力していたのが数だったら
 				case 2: //前回入力していたのが記号だったら
@@ -268,13 +268,12 @@
 					if (status == 3) {
 						stack.push(arit);
 					}
-
 					status = 3;
 
 					stack.push(number, "=");
-
 					try {
-						display(cal(stack));
+						ans = cal(stack);
+						display(ans);
 					} catch (e) {
 						putError();
 					}
@@ -285,7 +284,8 @@
 					//何もしない
 					break;
 			}
-			statusCheck("pressEqual");
+			return ans;
+			//statusCheck("pressEqual");
 		}
 
 		/*
@@ -415,9 +415,9 @@
 			testFunc();
 		}
 		function testFunc() {
-			// /*
-			// inNumber(input) test
-			// inNumberTest(input, sta, num, ari, stc);*/
+			/*
+			inNumber(input) test
+			inNumberTest(input, sta, num, ari, stc);*/
 			// inNumberTest(1, 1, 2, "+", [], 21);
 			// inNumberTest(1, 2, 3, "*", [1, "+", 2, "-"], [1, "+", 2, "-", 3, "*"]);
 			// inNumberTest(9, 3, 3, "*", [1, "+", 2, "-"], [1, "+", 2, "-", 3, "*"]);
@@ -428,11 +428,11 @@
 			// /*
 			// pressEqual() test
 			// pressEqualTest(sta, num, ari, stc, exp)*/
-			// pressEqualTest(1, 2, "+", [], [2]);
-			// pressEqualTest(2, 2, "+", [], [2]);
-			// pressEqualTest(3, 2, "+", [], ["+", 2]);
-			// pressEqualTest(4, 2, "+", [], ["+", 2]);
-			// pressEqualTest(5, 2, "+", [], ["+", 2]);
+			pressEqualTest(1, 2, "+", [], [2]);
+			pressEqualTest(2, 2, "+", [], [2]);
+			pressEqualTest(3, 2, "+", [], ["+", 2]);
+			pressEqualTest(4, 2, "+", [3], [3, "+", 2]);
+			pressEqualTest(5, 2, "+", [3], [3, "+", 2]);
 			// /*
 			// /*
 			// allClear()
@@ -657,15 +657,15 @@
 			number = num;
 			arit = ari;
 			stack = stc;
-			pressEqual();
+			let a = pressEqual();
 			switch (sta) {
 				case 1:
 				case 2:
 					if (
-						stack.toString === exp.toString &&
-						status === 3 &&
-						arit === ari &&
-						number === num
+						stack.length === 0 &&
+						status === 1 &&
+						arit === "+" &&
+						number === a
 					) {
 						success("pressEqualTest : status : " + status);
 					} else {
@@ -674,10 +674,10 @@
 					break;
 				case 3:
 					if (
-						stack.toString === exp.toString &&
-						status === 3 &&
-						arit === ari &&
-						number === num
+						stack.length === 0 &&
+						status === 1 &&
+						arit === "+" &&
+						number === a
 					) {
 						success("pressEqualTest : status : " + status);
 					} else {
