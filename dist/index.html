@@ -199,6 +199,7 @@
 					//前回,エラーが起こっていたら//前回入力していたのが＝だったら
 					console.log("ninumdef");
 					allClear();
+
 					number = input;
 					break;
 			}
@@ -347,6 +348,7 @@
 						break;
 					case "=":
 						allClear();
+						status = 3;
 						number = answer;
 						break;
 					//eが記号以外（数字）の時で
@@ -415,9 +417,9 @@
 			testFunc();
 		}
 		function testFunc() {
-			/*
-			inNumber(input) test
-			inNumberTest(input, sta, num, ari, stc);*/
+			// /*
+			// inNumber(input) test
+			// inNumberTest(input, sta, num, ari, stc);*/
 			// inNumberTest(1, 1, 2, "+", [], 21);
 			// inNumberTest(1, 2, 3, "*", [1, "+", 2, "-"], [1, "+", 2, "-", 3, "*"]);
 			// inNumberTest(9, 3, 3, "*", [1, "+", 2, "-"], [1, "+", 2, "-", 3, "*"]);
@@ -428,11 +430,11 @@
 			// /*
 			// pressEqual() test
 			// pressEqualTest(sta, num, ari, stc, exp)*/
-			pressEqualTest(1, 2, "+", [], [2]);
-			pressEqualTest(2, 2, "+", [], [2]);
-			pressEqualTest(3, 2, "+", [], ["+", 2]);
-			pressEqualTest(4, 2, "+", [3], [3, "+", 2]);
-			pressEqualTest(5, 2, "+", [3], [3, "+", 2]);
+			// pressEqualTest(1, 2, "+", [], [2]);
+			// pressEqualTest(2, 2, "+", [], [2]);
+			// pressEqualTest(3, 2, "+", [], ["+", 2]);
+			// pressEqualTest(4, 2, "+", [3], [3, "+", 2]);
+			// pressEqualTest(5, 2, "+", [3], [3, "+", 2]);
 			// /*
 			// /*
 			// allClear()
@@ -663,7 +665,7 @@
 				case 2:
 					if (
 						stack.length === 0 &&
-						status === 1 &&
+						status === 3 &&
 						arit === "+" &&
 						number === a
 					) {
@@ -675,7 +677,7 @@
 				case 3:
 					if (
 						stack.length === 0 &&
-						status === 1 &&
+						status === 3 &&
 						arit === "+" &&
 						number === a
 					) {
